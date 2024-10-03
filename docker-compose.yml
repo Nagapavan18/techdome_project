@@ -1,0 +1,38 @@
+version: '3'
+services:
+  backend:
+    build: ./Techdome-backend
+    ports:
+      - "5000:5000"
+    container_name: techdome-backend
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URI: mongodb://mongo:27017/sampledatabase
+    networks:
+      - app-network
+
+  frontend:
+    build: ./Techdome-frontend
+    ports:
+      - "3000:3000"
+    container_name: techdome-frontend
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo:latest
+    container_name: techdome-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo-data: 
